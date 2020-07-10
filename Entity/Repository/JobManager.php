@@ -37,7 +37,7 @@ class JobManager
     private $dispatcher;
     private $registry;
     private $retryScheduler;
-    
+
     public function __construct(ManagerRegistry $managerRegistry, EventDispatcherInterface $eventDispatcher, RetryScheduler $retryScheduler)
     {
         $this->registry = $managerRegistry;
@@ -269,7 +269,7 @@ class JobManager
 
         if (null !== $this->dispatcher && ($job->isRetryJob() || 0 === count($job->getRetryJobs()))) {
             $event = new StateChangeEvent($job, $finalState);
-            $this->dispatcher->dispatch('jms_job_queue.job_state_change', $event);
+            $this->dispatcher->dispatch($event, 'jms_job_queue.job_state_change');
             $finalState = $event->getNewState();
         }
 
@@ -424,7 +424,7 @@ class JobManager
 
         return count($result);
     }
-    
+
     private function getJobManager(): EntityManager
     {
         return $this->registry->getManagerForClass(Job::class);
