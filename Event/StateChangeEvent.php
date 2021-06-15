@@ -23,6 +23,8 @@ use JMS\JobQueueBundle\Event\JobEvent;
 
 class StateChangeEvent extends JobEvent
 {
+    public const NAME = 'jms_job_queue.job_state_change';
+
     private $newState;
 
     public function __construct(Job $job, $newState)
